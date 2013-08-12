@@ -22,7 +22,7 @@ set :application, "TheHive"
 set :staging_server, "7h3h1v3.com"
 set :production_server, "doesnotexistyet.example.com"
 set :user, "deploy"
-set :repository, "git@github.com:FXLabs/TheHive.git"
+set :repository, "git@github.com:seantmalone/HiveMind.git"
 set :config_files, %w( database.yml settings.local.yml)
 ###################################
 
