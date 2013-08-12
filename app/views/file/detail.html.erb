@@ -1,0 +1,20 @@
+<h6>Filename: <%= @file.name %></h6>
+<h6>ID: <%= @file.id %></h6>
+<h6>UUID: <%= @file.uuid %></h6>
+
+<h6>Data:</h6>
+
+<ul id="fileblock_list">
+    <% @file.fileblock_keys.each do |fileblock_key| %>
+        <li>
+          <%= fileblock_key %>
+          <ul>
+            <% $redis.zrangebyscore("#{fileblock_key}|nodes", Settings.block_expiration.minutes.ago.to_i, '+inf', :with_scores => true).each do |node| %>
+                <li>
+                  <%= Time.at(node[1]).utc.to_s %> &mdash; <%= node[0] %>
+                </li>
+            <% end %>
+          </ul>
+        </li>
+    <% end %>
+</ul>

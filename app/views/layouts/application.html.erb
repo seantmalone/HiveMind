@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>HiveMind</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<%= nav_bar  :brand => "HiveMind" do %>
+    <% menu_group do %>
+        <%= menu_item "Files", '/file' %>
+        <%= menu_item "Nodes", '/node/index' %>
+    <% end %>
+<% end %>
+
+
+
+<div class="container-fluid">
+  <div class="row-fluid">
+    <div class="span12">
+      <%= yield %>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

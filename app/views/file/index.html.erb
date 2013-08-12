@@ -1,0 +1,58 @@
+<%= grid(@files_grid) do |g|
+
+  g.column :name => 'ID', :attribute => 'id', :filter => false do |file|
+    file.id
+  end
+
+  g.column :name => 'Name', :attribute => 'name', :filter => false  do |file|
+    file.name
+  end
+
+  g.column  :name => 'UUID', :attribute => 'uuid', :filter => false do |file|
+    file.uuid
+  end
+
+  g.column :name => 'Destroy' do |file|
+    link_to 'Destroy',
+            file_path(file),
+            :method => :delete,
+            :data => { :confirm => 'Confirm file destroy?' },
+            :class => 'btn btn-mini btn-danger'
+
+  end
+
+  g.column :name => 'Fetch' do |file|
+    link_to 'Fetch',
+            file_fetch_path(file),
+            :class => 'btn btn-mini'
+  end
+
+  g.column :name => 'Detail' do |file|
+    link_to 'Detail',
+            file_detail_path(file),
+            :class => 'btn btn-mini'
+  end
+
+end
+%>
+
+<h5>Upload New File</h5>
+<%= form_for HiveFile.new, :url => url_for(:controller => 'file', :action => 'create'), :html => { :class => 'form-horizontal' } do |f| %>
+  <table class="table table-bordered">
+    <tr class='info'>
+      <td>
+        <%= f.text_field :name, :class => 'text_field input-medium', :placeholder => 'File Name' %>
+      </td>
+      <td>
+        <%= f.password_field :password, :class => 'text_field input-medium', :placeholder => 'Password' %>
+      </td>
+      <td>
+        <%= f.file_field :file, :class => 'text_field input-medium' %>
+      </td>
+      <td>
+        <%= f.submit "Upload", :class => 'btn btn-small btn-primary' %>
+        <%= f.submit "Clear", :type => "reset", :class => 'btn btn-small' %>
+      </td>
+    </tr>
+  </table>
+<% end %>

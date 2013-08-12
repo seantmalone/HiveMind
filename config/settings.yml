@@ -1,0 +1,7 @@
+block_size: 1024     #Characters
+distribution_node_count: 4
+minimum_node_count: 2
+block_expiration: 5   #minutes
+
+username: 'username'
+password: 'letmeinthehive'

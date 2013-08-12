@@ -1,0 +1,71 @@
+<script>
+    $(document).ready(function(){
+
+        $('#fetch-button').click(function(){
+            retrieve_file($(this).data('fileid'), $('#password').val());
+        });
+
+        retrieve_file = function(id,password) {
+            $.get('/file/' + id + '/retrieve')
+                .done(function(data) {
+                    console.log('Retrieve Initiated');
+                    $('#loadingdiv').show();
+                    $('#loadingmsg').text('File blocks are loading ...');
+                    show_percentage (0);
+                    download_file(id, password);
+                });
+        };
+
+        download_file = function(id, password) {
+            $.ajax({
+                url: '/file/' + id + '/download_ready',
+                cache: false,
+                method: 'post',
+                data: {password: password}
+            }).done(function(data) {
+                console.log('Download Ready');
+                $('#loadingmsg').text('File load complete!');
+                show_percentage (100);
+                window.location.replace('/file/' + id + '/download?password=' + password)
+            }).fail(function(resp) {
+                data = JSON.parse(resp.responseText)
+                console.log(data.err);
+                if (data.err == 'incomplete') {
+                    console.log('Download Not Ready');
+                    percentage = data.percentage;
+                    show_percentage (percentage);
+                    $('#loadingbar').width(percentage + '%');
+                    setTimeout(function(){download_file(id, password)}, 250)
+                }
+
+                if (data.err == 'password_incorrect') {
+                    $('#loadingmsg').text('Password Incorrect!');
+                }
+
+            });
+        }
+
+        show_percentage = function(percentage) {
+            $('#loadingbar').width(percentage + '%')
+        }
+    });
+</script>
+
+<h3>Fetch file: <%= @file.name %></h3>
+
+<p>
+  <input class="text_field input-medium" id="password" placeholder="Password" size="30" type="password">
+  <button id="fetch-button" class="btn btn-primary" type="button" data-fileid="<%= @file.id %>">Fetch File</button>
+</p>
+
+<div id='loadingdiv' style='display: none; margin-top: 30px'>
+    <p id='loadingmsg'>
+        File blocks are loading ...
+    </p>
+    <p>
+        <div class="progress progress-striped active">
+          <div id="loadingbar" class="bar" style="width: 0%;"></div>
+        </div>
+    </p>
+</div>
+

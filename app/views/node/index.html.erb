@@ -1,0 +1,24 @@
+<p>
+  Nodes active in the last minute:
+</p>
+
+<%= grid(@nodes_grid) do |g|
+
+  g.column :name => 'ID', :attribute => 'id', :filter => false do |node|
+    node.id
+  end
+
+  g.column :name => 'IP Address', :attribute => 'ip', :filter => false  do |node|
+    node.ip
+  end
+
+  g.column  :name => 'UUID', :attribute => 'uuid', :filter => false do |node|
+    node.uuid
+  end
+
+  g.column  :name => 'Last Updated', :attribute => 'updated_at', helper_style: :standard, :filter => false do |node|
+    node.updated_at
+  end
+
+end
+%>
